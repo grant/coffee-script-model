@@ -10,12 +10,15 @@ class Model
 
   @property = (name, options = {}) ->
     @fields ?= {}
+
     fieldProperties = {}
     fieldProperties.default ?= options.default
     @fields[name] = fieldProperties
 
+    # Default getter and setter
     options.get ?= -> @attr[name]
     options.set ?= (value) -> @attr[name] = value
+
     Object.defineProperty @prototype, name, options
 
   constructor: (attr) ->
