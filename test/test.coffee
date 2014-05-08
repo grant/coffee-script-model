@@ -8,9 +8,24 @@ describe 'model', ->
 
     empty = new Empty
     should.not.exist empty.something
+
   it 'should have simple properties', ->
-    class UserSimple extends Model
+    class User extends Model
       @property 'username'
 
-    user = new UserSimple
-    user.username.should.be.undefined
+    user = new User username: 'grant'
+    should(user.username).equal 'grant'
+
+    userUndefined = new User
+    should(user.username).be.undefined
+
+  it 'should have default values', ->
+    class User extends Model
+      @property 'username',
+        default: 'default-username'
+
+    user = new User
+    should(user.username).equal 'default-username'
+
+    userDefined = new User username: 'grant'
+    should(userDefined.username).equal 'grant'
