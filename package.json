@@ -1,0 +1,27 @@
+{
+  "name": "coffee-script-model",
+  "version": "0.0.0",
+  "description": "A simple wrapper over the coffee-script class with getters, setters, fields, and event bindings",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/grant/coffee-script-model.git"
+  },
+  "keywords": [
+    "coffee",
+    "script",
+    "class",
+    "model",
+    "getters",
+    "setters"
+  ],
+  "author": "Grant Timmerman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/grant/coffee-script-model/issues"
+  },
+  "homepage": "https://github.com/grant/coffee-script-model"
+}
