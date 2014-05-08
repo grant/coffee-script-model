@@ -1,15 +1,15 @@
 isFunction = (obj) ->
   Object.prototype.toString.call(obj) == '[object Function]'
 
-# Derived from https://gist.github.com/almost/1396231
+# # Derived from https://gist.github.com/almost/1396231
 class Model
-  @::property = (prop, options) ->
+  @property: (name, options = {}) ->
     @fields ?= {}
-    @fields[name] = {
-      options.default
-    }
-    delete options.default
-    Object.defineProperty @prototype, prop, options
+
+    @fields[name] = "default": options.default if options.default
+    options.get ?= -> @attributes[name]
+    options.set ?= (value) -> @attributes[name] = value
+    Object.defineProperty @prototype, name, options
 
   constructor: (attributes) ->
     @attributes = {}
