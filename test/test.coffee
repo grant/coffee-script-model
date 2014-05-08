@@ -21,7 +21,7 @@ describe 'model', ->
       should(user.username).equal 'grant'
 
       userUndefined = new User
-      should(user.username).be.undefined
+      should.not.exist(userUndefined.username)
 
     it 'should have getters', ->
       class Dog extends Model
@@ -74,3 +74,24 @@ describe 'model', ->
 
       program3 = new Program
       should(program3.debug_level).equal 4
+
+  describe 'writable', ->
+    it 'should be writeable when enabled', ->
+      class User extends Model
+        @property 'username',
+          writeable: true
+
+      user = new User
+      user.username = 'grant'
+      should(user.username).equal 'grant'
+
+    it 'should not be writable when disabled', ->
+      class User extends Model
+        @property 'username',
+          writable: false
+
+      user = new User
+      try
+        user.username = 'grant'
+      catch e
+        e.name.should.equal 'NotWritableError'

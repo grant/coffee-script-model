@@ -1,40 +1,62 @@
-isFunction = (obj) ->
-  Object.prototype.toString.call(obj) == '[object Function]'
+errors = require 'errors'
 
-# Derived from https://gist.github.com/almost/1396231
+# derived from https://gist.github.com/almost/1396231
 
 class Model
 
-  # Fields are the class definition's fields
-  # Attrs are the class instance's properties
+  # fields are the class definition's fields
+  # attrs are the class instance's properties
 
   @property = (name, options = {}) ->
+    # default options
+    options.writable ?= true
+
     @fields ?= {}
 
     fieldProperties = {}
     fieldProperties.default ?= options.default
     @fields[name] = fieldProperties
 
-    # Default getter and setter
-    options.get ?= -> @attr[name]
-    options.set ?= (value) -> @attr[name] = value
+    # default property options
+    propertyOptions = {
+      set: options.set
+      get: options.get
+    }
+    propertyOptions.get ?= -> @attr[name]
+    if options.writable
+      propertyOptions.set ?= (value) -> @attr[name] = value
+    else
+      propertyOptions.set = (value) -> throw new errors.NotWritableError
 
-    Object.defineProperty @prototype, name, options
+    Object.defineProperty @prototype, name, propertyOptions
 
   constructor: (attr) ->
     @attr = {}
-    # Copy in attr passed in or defaults from the fields as appropriate
+    # copy in attr passed in or defaults from the fields as appropriate
     for name, options of @constructor.fields
-      # Defaults can be specified as values or as functions
+      # defaults can be specified as values or as functions
       @attr[name] = attr?[name] || if (isFunction(options.default)) then options.default() else options.default
     @listeners = {}
 
-  # Events
+  # events
   bind: (event, listener) =>
     (@listeners[event] ?= []).push(listener)
   unbind: (event) =>
     remove @listener[event]
   emit: (event, args...) =>
     listener(args...) for listener in @listeners[event] if @listeners[event]
+
+# errors
+
+errors.create
+  name: 'NotWritableError'
+  defaultMessage: 'This property is not writable'
+
+# helper methods
+
+isFunction = (obj) ->
+  Object.prototype.toString.call(obj) == '[object Function]'
+
+# exports
 
 module.exports = Model
