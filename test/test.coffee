@@ -109,3 +109,42 @@ describe 'model', ->
         e.name.should.equal 'IllegalArgumentError'
       if !errorThrown
         throw new Error 'No IllegalArgumentError was thrown'
+
+  describe 'events', ->
+    it 'should emit properly', ->
+      class User extends Model
+        @property 'username',
+          set: (newUsername) ->
+            if newUsername != @username
+              @attr.username = newUsername
+              @emit('changed username', newUsername)
+
+      user = new User username: 'grant'
+      changed = false
+      user.bind 'changed username', (username) ->
+        changed = true
+        username.should.equal 'henry'
+
+      user.username = 'henry'
+      if !changed
+        throw new Error 'No listen event was created'
+
+    it 'should unbind properly', ->
+      class User extends Model
+        @property 'username',
+          set: (newUsername) ->
+            if newUsername != @username
+              @attr.username = newUsername
+              @emit('changed username', newUsername)
+
+      user = new User username: 'grant'
+      changed = false
+      user.bind 'changed username', (username) ->
+        changed = true
+        username.should.equal 'henry'
+
+      user.unbind 'changed username'
+
+      user.username = 'henry'
+      if changed
+        throw new Error 'Listen event was created'

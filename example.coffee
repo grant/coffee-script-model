@@ -1,31 +1,51 @@
 # Demo
+
+Model = require './'
+
+# getters and setters example
+
 class Person extends Model
+  @property 'firstName'
+  @property 'lastName'
   @property 'fullName',
     get: -> "#{@firstName} #{@lastName}"
     set: (name) -> [@firstName, @lastName] = name.split ' '
   @property 'username'
   @property 'sick', default: false
 
-class Post extends Model
-  @field 'title', default: 'New post!'
-  @field 'body'
-  # the default is supplied as a closure which is evaluated at object creation time
-  @property 'created_at', default: -> new Date()
+person = new Person firstName: 'bob', lastName: 'smith'
+console.log person.fullName
 
-# Create a new user
-user = new User
-  username: 'tom'
-  twitter: 'almostobsolete'
+person.fullName = 'thomas vi'
+console.log person.firstName
+
+# events exampel
+
+class User extends Model
+  @property 'username',
+    set: (newUsername) ->
+      if newUsername != @username
+        @attr.username = newUsername
+        @emit('changed username', newUsername)
+  @property 'twitter'
+  @property 'created_at',
+    default: -> new Date()
+    get: ->
+      MM = @attr.created_at.getMonth() + 1
+      dd = @attr.created_at.getDate()
+      yyyy = @attr.created_at.getFullYear()
+      "#{MM}/#{dd}/#{yyyy}"
+
+user = new User(
+  username: 'grant'
+  twitter: 'granttimmerman'
+)
 
 # Bind to the change event for the title property
-# user.bind 'change:username', (value) =>
-#   alert "Username updated to #{value}"
-# # Print out details of posts when they are created by the user
-# user.bind 'add:posts', (post) =>
-#   alert "Post titled #{post.get('title')} was written at #{post.get('created_at')}"
-# # Print out details of posts when they are created by the user
-# user.bind 'remove:posts', (post) =>
-#   alert "Post titled #{post.get('title')} was removed"
+user.bind 'changed username', (value) =>
+  console.log "Username updated to #{value}"
 
-# # Change the user's username (which will trigger the event bound above)
-# user.set('username', 'thomas')
+# Change the user's username (which will trigger the event bound above)
+user.username = 'thomas'
+
+console.log "Created date: #{user.created_at}"

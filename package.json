@@ -2,7 +2,7 @@
   "name": "coffee-script-model",
   "version": "0.0.0",
   "description": "A simple wrapper over the coffee-script class with getters, setters, fields, and event bindings",
-  "main": "index.js",
+  "main": "index.coffee",
   "scripts": {
     "test": "mocha test/ --ui exports --reporter spec --compilers coffee:coffee-script/register"
   },
@@ -26,10 +26,10 @@
   "homepage": "https://github.com/grant/coffee-script-model",
   "devDependencies": {
     "should": "^3.3.1",
-    "mocha": "^1.18.2",
-    "coffee-script": "^1.7.1"
+    "mocha": "^1.18.2"
   },
   "dependencies": {
+    "coffee-script": "^1.7.1",
     "errors": "^0.1.0"
   }
 }

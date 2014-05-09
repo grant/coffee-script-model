@@ -7,7 +7,7 @@ class Model
   # fields are the class definition's fields
   # attrs are the class instance's properties
 
-  validArguments = [
+  validPropertyArgs = [
     'get'
     'set'
     'default'
@@ -16,7 +16,7 @@ class Model
 
   @property = (name, options = {}) ->
     for i of options
-      throw new errors.IllegalArgumentError if i not in validArguments
+      throw new errors.IllegalArgumentError if i not in validPropertyArgs
 
     # default options
     options.const ?= false
@@ -52,7 +52,7 @@ class Model
   bind: (event, listener) =>
     (@listeners[event] ?= []).push(listener)
   unbind: (event) =>
-    remove @listener[event]
+    @listeners[event] = []
   emit: (event, args...) =>
     listener(args...) for listener in @listeners[event] if @listeners[event]
 
