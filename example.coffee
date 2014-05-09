@@ -1,5 +1,3 @@
-# Demo
-
 Model = require './'
 
 # getters and setters example
@@ -19,7 +17,7 @@ console.log person.fullName
 person.fullName = 'thomas vi'
 console.log person.firstName
 
-# events exampel
+# events example
 
 class User extends Model
   @property 'username',
@@ -41,11 +39,11 @@ user = new User(
   twitter: 'granttimmerman'
 )
 
-# Bind to the change event for the title property
+# bind to the change event for the title property
 user.bind 'changed username', (value) =>
   console.log "Username updated to #{value}"
 
-# Change the user's username (which will trigger the event bound above)
+# change the user's username (which will trigger the event bound above)
 user.username = 'thomas'
 
 console.log "Created date: #{user.created_at}"
