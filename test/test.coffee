@@ -8,7 +8,6 @@ describe 'model', ->
   describe 'getters and setters', ->
     it 'should reject undefined fields', ->
       class Empty extends Model
-        constructor: ->
 
       empty = new Empty
       should.not.exist empty.something
@@ -75,23 +74,38 @@ describe 'model', ->
       program3 = new Program
       should(program3.debug_level).equal 4
 
-  describe 'writable', ->
-    it 'should be writeable when enabled', ->
+  describe 'const', ->
+    it 'should not be const when disabled', ->
       class User extends Model
         @property 'username',
-          writeable: true
+          const: false
 
       user = new User
       user.username = 'grant'
       should(user.username).equal 'grant'
 
-    it 'should not be writable when disabled', ->
+    it 'should be const when enable', ->
       class User extends Model
         @property 'username',
-          writable: false
+          const: true
 
       user = new User
       try
         user.username = 'grant'
       catch e
-        e.name.should.equal 'NotWritableError'
+        errorThrown = true
+        e.name.should.equal 'ConstError'
+      if !errorThrown
+        throw new Error 'No ConstError was thrown'
+
+  describe 'bad options argument', ->
+    it 'should throw an illegal argument error', ->
+      try
+        class User extends Model
+          @property 'username',
+            badProperty: true
+      catch e
+        errorThrown = true
+        e.name.should.equal 'IllegalArgumentError'
+      if !errorThrown
+        throw new Error 'No IllegalArgumentError was thrown'

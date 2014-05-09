@@ -7,9 +7,19 @@ class Model
   # fields are the class definition's fields
   # attrs are the class instance's properties
 
+  validArguments = [
+    'get'
+    'set'
+    'default'
+    'const'
+  ]
+
   @property = (name, options = {}) ->
+    for i of options
+      throw new errors.IllegalArgumentError if i not in validArguments
+
     # default options
-    options.writable ?= true
+    options.const ?= false
 
     @fields ?= {}
 
@@ -23,10 +33,10 @@ class Model
       get: options.get
     }
     propertyOptions.get ?= -> @attr[name]
-    if options.writable
+    if !options.const
       propertyOptions.set ?= (value) -> @attr[name] = value
     else
-      propertyOptions.set = (value) -> throw new errors.NotWritableError
+      propertyOptions.set = (value) -> throw new errors.ConstError
 
     Object.defineProperty @prototype, name, propertyOptions
 
@@ -49,8 +59,11 @@ class Model
 # errors
 
 errors.create
-  name: 'NotWritableError'
-  defaultMessage: 'This property is not writable'
+  name: 'ConstError'
+  defaultMessage: 'This property is constant'
+errors.create
+  name: 'IllegalArgumentError'
+  defaultMessage: 'An invalid argument was passed'
 
 # helper methods
 
