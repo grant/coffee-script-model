@@ -1,6 +1,6 @@
 {
   "name": "coffee-script-model",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A simple wrapper over the coffee-script class with getters, setters, fields, and event bindings",
   "main": "index.coffee",
   "scripts": {
