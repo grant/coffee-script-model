@@ -60,7 +60,7 @@ class Model
     @
 
   # Setter
-  set: (param1, param2) ->
+  set: (param1, param2) =>
     if typeof param1 is 'object'
       attrs = param1
       for name, value of attrs
@@ -71,7 +71,7 @@ class Model
       @[name] = value
     @
 
-  toJSON: ->
+  toJSON: =>
     @attr
 
 # errors
