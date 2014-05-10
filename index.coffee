@@ -49,12 +49,15 @@ class Model
     @listeners = {}
 
   # events
-  bind: (event, listener) =>
+  on: (event, listener) =>
     (@listeners[event] ?= []).push(listener)
-  unbind: (event) =>
+    @
+  off: (event) =>
     @listeners[event] = []
+    @
   emit: (event, args...) =>
     listener(args...) for listener in @listeners[event] if @listeners[event]
+    @
 
 # errors
 

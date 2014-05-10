@@ -121,7 +121,7 @@ describe 'model', ->
 
       user = new User username: 'grant'
       changed = false
-      user.bind 'changed username', (username) ->
+      user.on 'changed username', (username) ->
         changed = true
         username.should.equal 'henry'
 
@@ -129,7 +129,7 @@ describe 'model', ->
       if !changed
         throw new Error 'No listen event was created'
 
-    it 'should unbind properly', ->
+    it 'should off properly', ->
       class User extends Model
         @property 'username',
           set: (newUsername) ->
@@ -139,11 +139,11 @@ describe 'model', ->
 
       user = new User username: 'grant'
       changed = false
-      user.bind 'changed username', (username) ->
+      user.on 'changed username', (username) ->
         changed = true
         username.should.equal 'henry'
 
-      user.unbind 'changed username'
+      user.off 'changed username'
 
       user.username = 'henry'
       if changed
