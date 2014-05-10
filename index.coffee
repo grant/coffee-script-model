@@ -59,6 +59,18 @@ class Model
     listener(args...) for listener in @listeners[event] if @listeners[event]
     @
 
+  # Setter
+  set: (param1, param2) ->
+    if typeof param1 is 'object'
+      attrs = param1
+      for name, value of attrs
+        @[name] = value
+    else
+      name = param1
+      value = param2
+      @[name] = value
+    @
+
 # errors
 
 errors.create

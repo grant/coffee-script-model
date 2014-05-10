@@ -1,6 +1,10 @@
 Model = require '../'
 should = require 'should'
 
+errors = require 'errors'
+errors.create
+  name: 'ImmutableError'
+
 describe 'model', ->
 
   # getters and setters
@@ -148,3 +152,40 @@ describe 'model', ->
       user.username = 'henry'
       if changed
         throw new Error 'Listen event was created'
+
+  describe 'setter', ->
+    it 'should set one attribute', ->
+      class User extends Model
+        @property 'username'
+        @property 'email'
+
+      user = new User
+      user.set 'username', 'grant'
+      user.username.should.equal 'grant'
+
+    it 'should set multiple attributes', ->
+      class User extends Model
+        @property 'username'
+        @property 'email'
+
+      user = new User
+      user.set
+        username: 'grant'
+        email: 'email@example.com'
+      user.username.should.equal 'grant'
+      user.email.should.equal 'email@example.com'
+
+    it 'should give an error for bad set', ->
+      class User extends Model
+        @property 'username',
+          set: () -> throw new errors.ImmutableError "Don't set this"
+        @property 'email'
+
+      user = new User
+      try
+        user.set 'username', 'test'
+      catch e
+        error = true
+        e.name.should.equal 'ImmutableError'
+      if !error
+        throw new Error 'No listen event was created'
