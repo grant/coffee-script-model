@@ -71,6 +71,9 @@ class Model
       @[name] = value
     @
 
+  toJSON: ->
+    @attr
+
 # errors
 
 errors.create

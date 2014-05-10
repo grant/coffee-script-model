@@ -1,9 +1,16 @@
 Model = require '../'
 should = require 'should'
 
+# errors
+
 errors = require 'errors'
 errors.create
   name: 'ImmutableError'
+
+# helpers
+
+objCompare = (expected, actual) ->
+  JSON.stringify(actual).should.equal JSON.stringify expected
 
 describe 'model', ->
 
@@ -189,3 +196,17 @@ describe 'model', ->
         e.name.should.equal 'ImmutableError'
       if !error
         throw new Error 'No listen event was created'
+
+  describe 'toJSON', ->
+    it 'should work', ->
+      class User extends Model
+        @property 'username'
+        @property 'email'
+
+      user = new User username: 'grant', email: 'email@example.com'
+
+      expected =
+        username: 'grant'
+        email: 'email@example.com'
+
+      objCompare expected, user.toJSON()
