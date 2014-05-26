@@ -33,5 +33,6 @@ console.log person.firstName
 See [example.coffee](example.coffee) for more examples.
 
 ### Supports
+  - Node
   - Modern browsers
   - IE 9+
