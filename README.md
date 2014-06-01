@@ -1,7 +1,7 @@
 coffee-script-model
 ===================
 
-[![Build Status](https://secure.travis-ci.org/Automattic/coffee-script-model.png)](http://travis-ci.org/Automattic/coffee-script-model)
+[![Build Status](https://secure.travis-ci.org/grant/coffee-script-model.png)](http://travis-ci.org/grant/coffee-script-model)
 [![NPM version](https://badge.fury.io/js/coffee-script-model.png)](http://badge.fury.io/js/coffee-script-model)
 
 A simple wrapper over the coffee-script class with getters, setters, fields, and event bindings
