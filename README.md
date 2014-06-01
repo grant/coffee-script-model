@@ -10,7 +10,7 @@ npm install coffee-script-model --save
 ### Example
 
 ```coffee
-require 'coffee-script-model'
+Model = require 'coffee-script-model'
 
 class Person extends Model
   @property 'firstName'

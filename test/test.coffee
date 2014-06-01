@@ -210,3 +210,9 @@ describe 'model', ->
         email: 'email@example.com'
 
       objCompare expected, user.toJSON()
+
+    it 'should give an empty object if there are no properties', ->
+      class User extends Model
+
+      user = new User
+      objCompare {}, user.toJSON()

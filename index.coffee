@@ -72,7 +72,7 @@ class Model
     @
 
   toJSON: =>
-    @attr
+    @attr || {}
 
 # errors
 
